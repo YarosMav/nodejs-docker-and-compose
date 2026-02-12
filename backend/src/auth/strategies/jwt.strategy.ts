@@ -19,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       // 2. Не игнорировать срок годности
       ignoreExpiration: false,
       // 3. Секретный ключ (должен совпадать с тем, что в AuthModule)
-      secretOrKey: 'e0c64c62a0bf4b749e10b558b233f9cd',
+      secretOrKey: process.env.JWT_SECRET || 'e0c64c62a0bf4b749e10b558b233f9cd',
     });
   }
 

@@ -13,7 +13,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: 'e0c64c62a0bf4b749e10b558b233f9cd', // Замени на свой
+      secret: process.env.JWT_SECRET || 'e0c64c62a0bf4b749e10b558b233f9cd', // Замени на свой
       signOptions: { expiresIn: '7d' },
     }),
   ],
