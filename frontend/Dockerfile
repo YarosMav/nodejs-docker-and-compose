@@ -1,5 +1,5 @@
 # Стейдж 1: Сборка (Builder)
-FROM node:16-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
