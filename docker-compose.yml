@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # 1. База данных
+  database:
+    image: postgres:16-alpine
+    container_name: kupipodariday-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  # 2. Бэкенд (с PM2 внутри)
+  backend:
+    build: ./backend
+    container_name: kupipodariday-backend
+    restart: always
+    # Строго по ТЗ: бэкенд на 4000 порту
+    ports:
+      - "4000:4000"
+    environment:
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      JWT_SECRET: ${JWT_SECRET}
+    depends_on:
+      - database
+
+  # 3. Фронтенд (с Nginx внутри)
+  frontend:
+    build: ./frontend
+    container_name: kupipodariday-frontend
+    restart: always
+    # Строго по ТЗ: фронтенд на 8081 порту
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+
+volumes:
+  pg_data:
